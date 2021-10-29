@@ -1,0 +1,22 @@
+$grey-highlight: rgba(128,128,128,.12);
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    padding: 15px;
+    font-size: 20px;
+    line-height: 30px;
+
+    strong {
+        font-size: 22px;
+    }
+
+    code {
+        padding: 2px;
+        border-radius: 4px;
+        background-color: $grey-highlight;
+    }
+}

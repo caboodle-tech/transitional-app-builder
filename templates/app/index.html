@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+${t:head}
+<body>
+    <header>
+        <h1>Demo Page</h1>
+    </header>
+    <main>
+        <p>
+            Hello, this is a simple demo page to get you started. If you look at the source file for this page <code>app/index.html</code> you will see the following variables:
+        </p>
+        <ul>
+            <li>
+                <strong>t:head</strong> &ndash; A template file called <code>head</code>. This file is located in <code>private/templates</code> and contains all the HTML code for every pages <code>&lt;head&gt;</code> section.
+            </li>
+            <li>
+                <strong>f:copyright(2021)</strong> &ndash; A function called <code>copyright</code>. This file is located in <code>private/functions</code>. You can provided it the year your app/ company was founded and it will create the correct copyright footer for you.
+            </li>
+        </ul>
+        <p>
+            If you look inside the <code>head</code> template file you will notice more advanced variables:
+        </p>
+        <ul>
+            <li>
+                <strong>f:title(g:title,v:title)</strong> &ndash; A function called <code>title</code> that accepts two parameters. You can provided a global title (<strong>g:title</strong>) and a local title (<strong>v:title</strong>) for the function to use. This file is located in <code>private/functions</code>.
+            </li>
+            <li>
+                <strong>f:mainStylesheet</strong> &ndash;A function called <code>mainStylesheet</code> that automatically adds the <code>&lt;link&gt;</code> to our main stylesheet. This file is located in <code>private/functions</code>.
+            </li>
+        </ul>
+    </main>
+    <footer>
+        ${f:copyright(2021)}
+    </footer>
+</body>
+</html>

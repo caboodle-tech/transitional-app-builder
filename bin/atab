@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+const Tab = require('../atab');
+
+/**
+ * This wrapper executable checks for known node flags and appends them when found,
+ * before invoking the "real" executable (`../atab.js`)
+ *
+ * @module bin/atab
+ * @private
+ */
+
+// Get all command line options.
+const opts = process.argv.splice(2);
+
+// The basic arguments object TAB is expecting.
+const realOpts = {
+    css: 'LESS',
+    cmds: [],
+    port: null,
+    root: null
+};
+
+// Update the arguments object for TAB as needed.
+for (let i = 0; i < opts.length; i++) {
+    const op = opts[i].trim();
+    if (op[0] === '-') {
+        let value = '';
+        if (opts[i + 1]) {
+            value = opts[i + 1];
+            i += 1;
+        }
+        // eslint-disable-next-line default-case
+        switch (op.replace(/-/g, '').trim().toUpperCase()) {
+            case 'C':
+            case 'CSS':
+                realOpts.css = value.toUpperCase();
+                break;
+            case 'P':
+            case 'PORT':
+                realOpts.port = value;
+                break;
+            case 'R':
+            case 'ROOT':
+                realOpts.root = value;
+                break;
+        }
+    } else {
+        realOpts.cmds.push(op);
+    }
+}
+
+// Run TAB according to the users command(s).
+try {
+    const tab = new Tab();
+    tab.run(realOpts);
+} catch (error) {
+    console.log(error);
+}
