@@ -20,4 +20,4 @@ TAB was created because I saw a need for a simple lightweight framework that cou
 2. Help individuals/organizations use a better tool for a given project.
 3. Encourage rising developers to learn more about languages and less about tooling.
 
-Please read the [full manifesto](MAINIFESTO.md) if you would like to know more &ndash; I have a lot to say &ndash; and visit the documentation website for a live demonstration of TAB.
+Please read the [full manifesto](MANIFESTO.md) if you would like to know more &ndash; I have a lot to say &ndash; and visit the documentation website for a live demonstration of TAB.
