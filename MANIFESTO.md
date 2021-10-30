@@ -12,7 +12,7 @@ The idea for a Transitional App Builder (TAB/atab) was born out of my frustratio
 
 Without turning this introduction into an exhaustive essay, let me share some simple examples to support these two claims. **1.** I have consistently seen projects use, or require to be used, a library/framework like Angular, React, or Vue, when it really should be considered unnecessary. A small five page website, or an SPA, that will receive only a yearly update or two for the life of the site does not need these bulky solutions. **2.** I have had the privilege to work along side many different developers, including developers who I would consider more experienced or near evangelists for tools; libraries, frameworks, and so on. Yet, sometimes these developers don't even understand the basics of the language(s) we are using or how the `dom` works. The tooling seems to have abstracted to much away from the developer.
 
-**~ Christopher Keers** (*29 Oct 2021*)
+**~ Christopher Keers** (29 Oct 2021)
 
 ### Manifesto
 TAB was born out of the frustrations discussed in the introduction. It was created because there is need for a simple lightweight framework that could do three things:
