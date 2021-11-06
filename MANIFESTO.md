@@ -1,33 +1,53 @@
 # The TAB Manifesto
 
-### Introduction
-The idea for a Transitional App Builder (TAB/atab) was born out of my frustrations with modern software development. If your interested in understanding where these frustrations come from, and to help you appreciate my point of view better, here is a brief summary of my history with software development and the IT field. Skip the blockquotes if your not interested:
+## Introduction
+The idea for a Transitional App Builder (TAB/atab) was born out of my frustrations with modern software development. To avoid this manifesto becoming an essay let me provide you with a **TLDR;** of my background. These experiences have formed the point of view that has led to TAB being created. I make no claims that this point of view is better than another, only that from my spot on the mountain this is what makes the journey easier for me.
 
-> I started my development career as a self taught web designer building simple websites from scratch in Highschool. At the time Adobe Dreamweaver was my favorite IDE and I thought its templating regions were all I ever would need. When I entered my first year of college however I learned about better IDE's, frameworks, design patterns and principles, and so on. Before graduating with my Associates Degree I had started running my own software development and tech consulting business, Caboodle Tech Inc. Over time my skills and experiences grew as clients entrusted me with more complex projects and responsibilities. Now, a decade later I have transitioned into teaching. For three years now &ndash; as of the time of this writing &ndash; I continue to work part-time in industry and part-time teaching these skills as an adjunct professor at Brigham Young University Idaho (BYUI).
+#### **TLDR; Background**
+- Self-taught computer programmer since High School.
+    - PHP, MySQL, HTML, CSS, and JavaScript.
+    - I learned these later at University and on my own: Java, C++, Python, SQL, SQLite, MondoDB, LESS/SASS, etc.
+- A.S. Computer Programming (RCC), B.S. Computer Information Technology (BYUI), and M.S. Software Development (BU) *70% completed*.
+- Small business owner for over a decade:
+    - Webmaster, web design, software development, tech consulating, small networks/ servers, etc.
+- Adjunct professor at BYUI.
+    - Programming, web design, information security, and general advising.
+- Part-time senior full-stack developer for a logistics company; direct employee not a client of my business.
 
-> I share this background with you **not** to claim that I know everything, or to profess some authority on my point of view, but simply to help you understand that I have seen a thing or two running my own business, working in industry, and working in academia. I know a little about a lot, and a lot about nothing. What I do know know for sure though, is during this entire time I have noticed an annoying, and possibly alarming, trend in the software development business:
+#### **Point of View**
+Given my background I have come to believe in the following two points:
 
-1. Many software and website projects use and rely on frameworks, tools, and/or libraries that in reality are overkill or unnecessary for the projects end goal.
-2. Many organizations, and sometimes academic institutions, encourage tooling over languages.
+1. Software and website projects have a tendency to use and rely on frameworks, tools, and/or libraries that in reality are overkill or unnecessary for the projects end goal. This is often done out of familiarity, the dev team is familiar with a tool or process, or because of time, time is money in business so we choose the *fastest* development route.
+2. Some business organizations, and sometimes academic institutions, have developed the habit of encouraging tooling over languages. Teaching and hiring developers based on tools or frameworks instead of languages.
 
-Without turning this introduction into an exhaustive essay, let me share some simple examples to support these two claims. **1.** I have consistently seen projects use, or require to be used, a library/framework like Angular, React, or Vue, when it really should be considered unnecessary. A small five page website, or an SPA, that will receive only a yearly update or two for the life of the site does not need these bulky solutions. **2.** I have had the privilege to work along side many different developers, including developers who I would consider more experienced or near evangelists for tools; libraries, frameworks, and so on. Yet, sometimes these developers don't even understand the basics of the language(s) we are using or how the `dom` works. The tooling seems to have abstracted to much away from the developer.
+Here are two real-life examples that clarify these points:
 
-**\~ Christopher Keers** (*29 Oct 2021*)
+1. I have worked on projects that use, or require to be used, a library/framework like Angular, React, Vue, and so on, when it really should be considered unnecessary. A small five page website, a SPA that will receive only a yearly update for its entire life, or a static information only page, does not need these bulky solutions.
+2. I have had the privilege to work along side many different developers, including developers who I would consider more experienced or near evangelists for their process: tools, libraries, frameworks, and so on. Yet, sometimes these developers don't even understand the basics of the language(s) we are using, for example the `DOM` in web development. The tooling seems to have abstracted so much away from the developer they forgot how to develop natively.
 
-### Manifesto
+#### **Concession**
+Having owned my own business for over a decade I understand and conceded to the fact that business processes are necessary. Time and budget constraints are just a few of the factors that determine what languages and tooling needs to be used on a project. If your company has invested time, money, and resources into a development team that uses XYZ languages and tools, then XYZ languages and tools are the go to for new projects.
+
+#### **Conclusion**
+
+My goal however is to encourage individuals and teams to not only consider alternatives, but to provide a solution that overcomes some of the concerns and hurdles caused by these business processes and investments. TAB will not be the best solution for everyone, but it could be a better tool than what your using for some projects. If your a student or relatively new developer TAB is the perfect blend of learning native languages and tooling, a stepping stone that will in my option better prepare you to use advanced tools later. Some people may even find TAB as a better replacement for rapid static site development than bigger tools offering features you will never use.
+
+**\~ Christopher Keers** (*6 Nov 2021*)
+
+## Manifesto
 TAB was born out of the frustrations discussed in the introduction. It was created because there is need for a simple lightweight framework that could do three things:
 
-1. Improve development time and morale for individuals/teams.
-2. Help individuals/organizations use a better tool for a given project.
-3. Encourage rising developers to learn more about languages and less about tooling.
+1. Encourage rising developers to learn more about languages and less about tooling.
+2. Improve development time and morale for small teams or solo developers.
+3. Encourage using the best tool instead of a familiar tool for a given project.
 
 To clarify these points, TAB:
 
 - can be a better tool to use than ones your currently using, but this is always project dependent. Some projects would be better suited by a different tool. Challenge yourself to check!
-- is all about using the best tool for the job and not fitting a job into a tool. I can go off-roading in a two wheel drive car if I want, but a four wheel drive lifted truck would offer a better experience. 
-- is also here to encourage developers to start vanilla and add tools/frameworks only when necessary. MongoDB compliments TAB perfectly for example, but you'll have to add it into the TAB workflow on your own, in a way that fits your team/organization.
+- is all about using the best tool for the job and not fitting a job into a tool. You can off-roading in a two wheel drive car if I want, but a four wheel drive lifted truck would offer a better experience.
+- is here to encourage developers to start vanilla and add tools/frameworks only when necessary. MongoDB compliments TAB perfectly for example, but you'll have to add it into the TAB workflow on your own, in a way that fits your team or organization.
 
-### Why Name It TAB?
+## Why Name It TAB?
 This is actually a super simple answer:
 
 1. TAB is an easy to remember acronym and `atab` is nice and short for command line usage as an NPM package.
@@ -41,7 +61,7 @@ Ignoring the part about *accessibility features built in*, I felt I had develope
 
 So a big thank you to Rich Harris for `#transitionalapps`.
 
-### How Can I Help?
+## How Can I Help?
 TAB is an open source community supported project, if you would like to help please consider <a href="https://github.com/caboodle-tech/transitional-app-builder/issues" target="_blank">tackling an issue</a> or <a href="https://ko-fi.com/caboodletech" target="_blank">making a donation</a> to keep the project alive.
 
 TAB can also use a hand in building out new features. For example, it was never envisioned to handle accessibility features for the developer, but maybe there is a way to stay true to TAB's goals **and** be more Transitional App like?
