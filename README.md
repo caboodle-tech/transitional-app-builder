@@ -36,7 +36,7 @@ Unfortunately this will install the project inside the repo files, but everythin
 node ./bin/atab watch
 ```
 
-You will have to `ctrl` + `c` to stop the application. If you would like to initialize TAB with different settings including moving it to a different directory run this:
+You will have to use `ctrl` + `c` to stop the application. If you would like to initialize TAB with different settings including moving it to a different directory run this:
 
 ```javascript
 node ./bin/atab --help

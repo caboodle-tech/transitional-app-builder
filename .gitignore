@@ -3,4 +3,4 @@ node_modules/
 private/
 public/
 test/dev/*
-!text/dev/.gitkeep
+!*.gitkeep
