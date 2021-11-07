@@ -26,6 +26,7 @@ Please read the [full manifesto](MANIFESTO.md) if you would like to know more &n
 For the time being you can clone this repo and run the following command to initialize a new project:
 
 ```javascript
+npm install
 node ./bin/atab init
 ```
 
