@@ -18,4 +18,25 @@ TAB was created because I saw a need for a simple lightweight framework that cou
 2. Improve development time and morale for small teams or solo developers.
 3. Encourage using the best tool instead of a familiar tool for a given project.
 
-Please read the [full manifesto](MANIFESTO.md) if you would like to know more &ndash; I have a lot to say &ndash; and visit the documentation website for a live demonstration of TAB.
+Please read the [full manifesto](MANIFESTO.md) if you would like to know more &ndash; I have a lot to say &ndash; and visit the documentation website for a live demonstration of TAB. (Coming Soon)
+
+## Installation & Usage
+(Coming soon)
+
+For the time being you can clone this repo and run the following command to initialize a new project:
+
+```javascript
+node ./bin/atab init
+```
+
+Unfortunately this will install the project inside the repo files, but everything will still work. Run this command to start the TAB application:
+
+```javascript
+node ./bin/atab watch
+```
+
+You will have to `ctrl` + `c` to stop the application. If you would like to initialize TAB with different settings including moving it to a different directory run this:
+
+```javascript
+node ./bin/atab --help
+```

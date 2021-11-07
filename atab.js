@@ -754,6 +754,9 @@ const Tab = (function compiler(rootDir) {
                 watchForChanges();
                 garbageCollection();
                 break;
+            case '-H':
+            case '-HELP':
+            case '--HELP':
             default:
                 // eslint-disable-next-line no-case-declarations
                 const man = getFile(Path.join(ROOT, 'man.txt'));
