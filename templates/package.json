@@ -1,0 +1,11 @@
+{
+    "name": "package-name-here",
+    "version": "0.0.0",
+    "description": "Your package description here.",
+    "main": "public/index.html",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "Proprietary Software?"
+}

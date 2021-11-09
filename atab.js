@@ -4,6 +4,7 @@
 /* eslint-disable global-require */
 const CmdLine = require('child_process');
 const FS = require('fs');
+const OS = require('os');
 const Path = require('path');
 const Server = require('@caboodle-tech/node-simple-server');
 
@@ -24,6 +25,7 @@ const Tab = (function compiler(rootDir) {
     const REGEX = {};
     let ROOT = `${process.cwd()}/`;
     let TEMPS = {};
+    const TMP_DIR = Path.join(OS.tmpdir(), 'atab');
     let TEMPS_REGEX = {};
     let WHITELIST = [];
 
@@ -331,7 +333,7 @@ const Tab = (function compiler(rootDir) {
     const getFile = function getFile(file, forceString) {
         // Attempt to convert relative paths to absolute based off ROOT for security.
         file = file.replace(/\.\.\/|\.\//g, '');
-        if (file.indexOf(ROOT) === -1) {
+        if (file.indexOf(ROOT) === -1 && file.indexOf(TMP_DIR) === -1) {
             file = ROOT + file;
         }
         /*
@@ -359,7 +361,7 @@ const Tab = (function compiler(rootDir) {
     const initializeNewProject = function (opts) {
 
         // Copy all template files to the project directory.
-        const templates = Path.normalize(Path.join(__dirname, 'templates'));
+        const templates = Path.normalize(Path.join(TMP_DIR, 'templates'));
         FS.readdirSync(templates).forEach((item) => {
             const dest = Path.join(ROOT, item);
             const file = Path.join(templates, item);
@@ -410,6 +412,30 @@ const Tab = (function compiler(rootDir) {
         // Delete the config base file and save the new config.
         FS.unlinkSync(configBase);
         writeFile(configLive, JSON.stringify(configObj));
+    };
+
+    /**
+     * Check if a semantic version number is newer than the previous.
+     * {@link https://stackoverflow.com/a/52059759/3193156|Source}
+     *
+     * @param {String} oldVer The old semantic version number.
+     * @param {String} newVer The current semantic version number.
+     * @return {Boolean} True if the new version is newer than the old; false otherwise.
+     */
+    const isNewVersion = function (oldVer, newVer) {
+        oldVer = oldVer.replace(/[^0-9.]/g, '').trim();
+        newVer = newVer.replace(/[^0-9.]/g, '').trim();
+        const oldParts = oldVer.split('.');
+        const newParts = newVer.split('.');
+        for (let i = 0; i < newParts.length; i++) {
+            // eslint-disable-next-line no-bitwise
+            const a = ~~newParts[i]; // parse int
+            // eslint-disable-next-line no-bitwise
+            const b = ~~oldParts[i]; // parse int
+            if (a > b) return true;
+            if (a < b) return false;
+        }
+        return false;
     };
 
     /**
@@ -724,6 +750,9 @@ const Tab = (function compiler(rootDir) {
             opts.cmds = ['MAN'];
         }
 
+        // Update tmp directory.
+        updateTmpDir();
+
         // Run the specified command.
         switch (opts.cmds[0].toUpperCase()) {
             case 'BUILD':
@@ -759,7 +788,7 @@ const Tab = (function compiler(rootDir) {
             case '--HELP':
             default:
                 // eslint-disable-next-line no-case-declarations
-                const man = getFile(Path.join(ROOT, 'man.txt'));
+                const man = getFile(Path.join(TMP_DIR, 'man.txt'));
                 console.log(man);
         }
     };
@@ -1030,6 +1059,42 @@ const Tab = (function compiler(rootDir) {
         // Live reload all frontend pages and garbage collect directories and files as needed.
         LIVE_SERVER.reloadPages();
         garbageCollection();
+    };
+
+    const updateTmpDir = function () {
+        const pkg = require('./package.json');
+        const tmpDirPkg = Path.join(TMP_DIR, 'package.json');
+        let tmpVersion = '0.0.0';
+
+        // If the tmp directory package.json exists get the version number from it.
+        if (FS.existsSync(tmpDirPkg)) {
+            const tmpPkg = require(tmpDirPkg);
+            tmpVersion = tmpPkg.version;
+        }
+
+        // Are the tmp version files outdated (older version)?
+        if (isNewVersion(tmpVersion, pkg.version)) {
+            // Yes. Delete them and copy over the new version of atab.
+            if (FS.existsSync(TMP_DIR)) {
+                FS.rmdirSync(TMP_DIR, { recursive: true });
+            }
+            FS.mkdirSync(TMP_DIR);
+            FS.readdirSync(__dirname).forEach((item) => {
+                const dest = Path.join(TMP_DIR, item);
+                const file = Path.join(__dirname, item);
+                if (FS.statSync(file).isDirectory()) {
+                    if (Path.basename(file) !== 'node_modules') {
+                        copyDir(file, dest);
+                    }
+                } else if (file[0] !== '.') {
+                    FS.copyFile(file, dest, FS.constants.COPYFILE_FICLONE, (error, data) => {
+                        if (error !== null) {
+                            console.log(`ERROR: Could not copy ${file.replace(ROOT, '')} to the project directory. (${error.code})`);
+                        }
+                    });
+                }
+            });
+        }
     };
 
     /**

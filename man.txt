@@ -35,4 +35,4 @@ OPTIONS
     
     -r, --root
         The absolute path to use as the root of this application. Default is
-        the scripts __dirname value.
+        the processes current working directory: process.cwd().

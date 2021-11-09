@@ -21,23 +21,60 @@ TAB was created because I saw a need for a simple lightweight framework that cou
 Please read the [full manifesto](MANIFESTO.md) if you would like to know more &ndash; I have a lot to say &ndash; and visit the documentation website for a live demonstration of TAB. (Coming Soon)
 
 ## Installation & Usage
-(Coming soon)
 
-For the time being you can clone this repo and run the following command to initialize a new project:
-
-```javascript
-npm install
-node ./bin/atab init
-```
-
-Unfortunately this will install the project inside the repo files, but everything will still work. Run this command to start the TAB application:
+### Installation
+TAB can be installed globally (recommended) or locally to a specific project. For a global install run the following command from your terminal:
 
 ```javascript
-node ./bin/atab watch
+npm install atab -g
 ```
 
-You will have to use `ctrl` + `c` to stop the application. If you would like to initialize TAB with different settings including moving it to a different directory run this:
+For a local install you should setup your projects directory first and then add TAB as a development dependency. Open a terminal at your projects location and run the following commands:
 
 ```javascript
-node ./bin/atab --help
+npm init
+npm install atab --save-dev
 ```
+
+### Usage
+TAB should always be run with `npx` &ndash; the Node Package Execute binary &ndash; from your projects root directory. Open a terminal at your projects root to run the following commands:
+
+**Print the Manual**<br>
+```javascript
+npx atab man
+// or
+npx atab --help
+```
+
+**Initialize a new TAB Project**<br>
+```javascript
+npx atab init
+```
+
+**Start the TAB Server / Auto Compiler**<br>
+```javascript
+npx atab watch
+// or
+npx atab serve
+```
+
+**Compile (Build) Your Project**<br>
+```javascript
+// This does a one time compile and does not start the TAB server or auto compiler.
+npx atab compile
+// or
+npx atab build
+```
+
+**Release a new Version of Your Project**<br>
+(Coming Soon)
+
+This will run `compile` and then package the build in a zip folder for you.
+
+## Changelog
+
+The [current changelog is here](./changelogs/v1.md). All [other changelogs are here](./changelogs).
+
+## Contributions
+
+TAB is an open source community supported project, if you would like to help please consider <a href="https://github.com/caboodle-tech/transitional-app-builder/issues" target="_blank">tackling an issue</a> or <a href="https://ko-fi.com/caboodletech" target="_blank">making a donation</a> to keep the project alive.

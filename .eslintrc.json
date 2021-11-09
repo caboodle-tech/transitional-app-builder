@@ -3,7 +3,9 @@
         "browser": true,
         "es2021": true
     },
-    "extends": ["airbnb-base"],
+    "extends": [
+        "airbnb-base"
+    ],
     "parserOptions": {
         "ecmaVersion": 12,
         "sourceType": "module"
@@ -11,11 +13,23 @@
     "rules": {
         "comma-dangle": "off",
         "func-names": "off",
-        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
         "no-param-reassign": "off",
-        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "no-plusplus": [
+            "error",
+            {
+                "allowForLoopAfterthoughts": true
+            }
+        ],
         "no-template-curly-in-string": "off",
         "no-unused-vars": "off",
+        "no-unreachable": "warn",
         "no-use-before-define": "off",
         "no-restricted-syntax": [
             "error",
