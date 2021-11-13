@@ -11,15 +11,6 @@ Transitional App Builder, also referred to as *A* Transitional App Builder (atab
 
 :heavy_check_mark:&nbsp; Your project is highly dynamic and you are conformable managing SPA or PWA on your own; or you have a tool in mind that would work well with TAB.
 
-## The TAB Manifesto
-TAB was created because I saw a need for a simple lightweight framework that could do three things:
-
-1. Encourage rising developers to learn more about languages and less about tooling.
-2. Improve development time and morale for small teams or solo developers.
-3. Encourage using the best tool instead of a familiar tool for a given project.
-
-Please read the [full manifesto](MANIFESTO.md) if you would like to know more &ndash; I have a lot to say &ndash; and visit the documentation website for a live demonstration of TAB. (Coming Soon)
-
 ## Installation & Usage
 
 ### Installation
@@ -70,6 +61,15 @@ npx atab build
 (Coming Soon)
 
 This will run `compile` and then package the build in a zip folder for you.
+
+## The TAB Manifesto
+TAB was created because I saw a need for a simple lightweight framework that could do three things:
+
+1. Encourage rising developers to learn more about languages and less about tooling.
+2. Improve development time and morale for small teams or solo developers.
+3. Encourage using the best tool instead of a familiar tool for a given project.
+
+Please read the [full manifesto](MANIFESTO.md) if you would like to know more &ndash; I have a lot to say &ndash; and visit the documentation website for a live demonstration of TAB. (Coming Soon)
 
 ## Changelog
 

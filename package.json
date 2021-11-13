@@ -1,50 +1,50 @@
 {
-  "name": "atab",
-  "version": "1.5.0",
-  "description": "A Transitional App Builder (TAB/atab) that makes creating single-page and multi-page websites or applications easier.",
-  "main": "atab.js",
-  "bin": {
-    "atab": "./bin/atab"
-  },
-  "directories": {
-    "test": "test"
-  },
-  "devDependencies": {
-    "chai": "^4.3.4",
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.25.2",
-    "less": "^4.1.2",
-    "mocha": "^9.1.3"
-  },
-  "dependencies": {
-    "@caboodle-tech/node-simple-server": "^1.2.4"
-  },
-  "scripts": {
-    "start": "node ./bin/atab",
-    "test": "npx mocha ./test/run-all-tests.js --delay"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/caboodle-tech/transitional-app-builder.git"
-  },
-  "author": "Christopher Keers <source[at]caboodle.tech>",
-  "contributors": [
-    "Caboodle Tech Inc (https://github.com/caboodle-tech)"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/caboodle-tech/transitional-app-builder/issues"
-  },
-  "homepage": "https://github.com/caboodle-tech/transitional-app-builder#readme",
-  "keywords": [
-    "SPA",
-    "MPA",
-    "PWA",
-    "Transitional App",
-    "Framework",
-    "Builder",
-    "Web",
-    "Website"
-  ]
+    "name": "atab",
+    "version": "1.5.0",
+    "description": "A Transitional App Builder (TAB/atab) that makes creating single-page and multi-page websites or applications easier.",
+    "main": "atab.js",
+    "bin": {
+        "atab": "./bin/atab"
+    },
+    "directories": {
+        "test": "test"
+    },
+    "devDependencies": {
+        "chai": "^4.3.4",
+        "eslint": "^7.32.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-plugin-import": "^2.25.2",
+        "less": "^4.1.2",
+        "mocha": "^9.1.3"
+    },
+    "dependencies": {
+        "@caboodle-tech/node-simple-server": "^1.2.4"
+    },
+    "scripts": {
+        "start": "node ./bin/atab",
+        "test": "npx mocha ./test/run-all-tests.js --delay"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/caboodle-tech/transitional-app-builder.git"
+    },
+    "author": "Christopher Keers <source[at]caboodle.tech>",
+    "contributors": [
+        "Caboodle Tech Inc (https://github.com/caboodle-tech)"
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/caboodle-tech/transitional-app-builder/issues"
+    },
+    "homepage": "https://github.com/caboodle-tech/transitional-app-builder#readme",
+    "keywords": [
+        "SPA",
+        "MPA",
+        "PWA",
+        "Transitional App",
+        "Framework",
+        "Builder",
+        "Web",
+        "Website"
+    ]
 }

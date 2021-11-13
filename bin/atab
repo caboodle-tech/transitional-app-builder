@@ -14,7 +14,7 @@ const opts = process.argv.splice(2);
 
 // The basic arguments object TAB is expecting.
 const realOpts = {
-    css: 'LESS',
+    css: 'SASS',
     cmds: [],
     port: null,
     root: null

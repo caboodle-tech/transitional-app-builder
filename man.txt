@@ -23,7 +23,7 @@ OPTIONS
         Initializes a new TAB project at the current directory location.
     
     -c, --css
-        Which CSS preprocessor to use: 'none', 'less' (default), or 'sass'.
+        Which CSS preprocessor to use: 'none', 'less', or 'sass' (default).
     -r, --root
         The path to the location to run the installer in. Default is the
         processes current working directory: process.cwd().

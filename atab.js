@@ -29,6 +29,12 @@ const Tab = (function compiler(rootDir) {
     let TEMPS_REGEX = {};
     let WHITELIST = [];
 
+    /**
+     * Copy a directory recursively to the provided location.
+     *
+     * @param {String} src The source directory to copy.
+     * @param {String} dest The destination directory.
+     */
     const copyDir = function (src, dest) {
         FS.mkdirSync(dest, { recursive: true });
         const entries = FS.readdirSync(src, { withFileTypes: true });
@@ -130,17 +136,17 @@ const Tab = (function compiler(rootDir) {
         const compileMode = compilerModule.doDefaultCompile();
         switch (compileMode.toUpperCase().trim()) {
             case 'AFTER':
-                // Use a specific compiler first then Tab's.
+                // Use a specific compiler first then TAB's.
                 data = compilerModule.compile(data);
                 data = defaultCompile(data);
                 break;
             case 'BEFORE':
-                // Use Tab's compiler first then a specific compiler.
+                // Use TAB's compiler first then a specific compiler.
                 data = defaultCompile(data);
                 data = compilerModule.compile(data);
                 break;
             default:
-                // Just use Tab's compiler.
+                // Just use TAB's compiler.
                 data = compilerModule.compile(data);
         }
 
@@ -199,9 +205,9 @@ const Tab = (function compiler(rootDir) {
     };
 
     /**
-     * Tab's compiler.
+     * TAB's compiler.
      *
-     * @param {String} data The data to compile according to Tab's rules.
+     * @param {String} data The data to compile according to TAB's rules.
      * @return {String} The compiled data.
      */
     const defaultCompile = function (data) {
@@ -472,7 +478,7 @@ const Tab = (function compiler(rootDir) {
                 const name = COMPILE_LIST._keys[key];
                 const compilerPath = Path.join(ROOT, 'private', 'compilers', `${name}.js`);
                 if (FS.existsSync(compilerPath)) {
-                    // Attempt to load the compilers and use Tab's defaults if anything is missing.
+                    // Attempt to load the compilers and use TAB's defaults if anything is missing.
                     compilerModule = reacquire(compilerPath);
                     if (typeof compilerModule.compile !== 'function') {
                         compilerModule.compile = (data) => defaultCompile(data);
@@ -484,7 +490,7 @@ const Tab = (function compiler(rootDir) {
                         compilerModule.compile = () => '.html';
                     }
                 } else {
-                    // Just use Tab's compiler.
+                    // Just use TAB's compiler.
                     compilerModule = {
                         compile: (data) => defaultCompile(data),
                         doDefaultCompile: () => 'default',
@@ -756,7 +762,7 @@ const Tab = (function compiler(rootDir) {
     /**
      * Main entry point of the compiler. Runs the requested command.
      *
-     * @param {String} cmd The command, with or without options, to run.
+     * @param {Object} opts The command, with or without options, to run.
      */
     const run = function run(opts) {
         // Run the specified command.
@@ -809,6 +815,12 @@ const Tab = (function compiler(rootDir) {
         }
     };
 
+    /**
+     * Attempts to run a command in the OS's terminal.
+     *
+     * @param {String} cmd The command to run.
+     * @return {void} Used only as a short circuit.
+     */
     const runCmd = function (cmd) {
         // Do not run an obviously unsafe command!
         const avoid = REGEX.unsafeCommands;
@@ -828,6 +840,16 @@ const Tab = (function compiler(rootDir) {
         }
     };
 
+    /**
+     * Run the command the user provided.
+     *
+     * NOTE: Slower computers can run into race conditions if TAB's temp files
+     * have not been installed yet or copy commands are taking to long. This will
+     * force a wait by sleeping a bit before trying to run the command the user
+     * provided.
+     *
+     * @param {Object} opts The command, with or without options, to run.
+     */
     const runSync = function (opts) {
         // Change root if the option is present.
         if (opts.root) {
@@ -901,7 +923,7 @@ const Tab = (function compiler(rootDir) {
      * Use a Promise to Sleep (wait) before running some code.
      *
      * @param {Integer} ms How long to sleep for in milliseconds.
-     * @returns A Promise that calls your wrapped code.
+     * @returns A Promise that with call your then() code once resolved.
      */
     const sleep = function (ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
@@ -1111,6 +1133,14 @@ const Tab = (function compiler(rootDir) {
         garbageCollection();
     };
 
+    /**
+     * TAB is designed to be installed globally so we need to copy the template
+     * files to the OS's temp directory or we will get permission errors
+     * attempting to access them.
+     *
+     * TODO: What is someone locally installs this? Is so this is a waste and
+     * should be skipped. Account for this in a future update.
+     */
     const updateTmpDir = function () {
         const pkg = require('./package.json');
         const tmpDirPkg = Path.join(TMP_DIR, 'package.json');
