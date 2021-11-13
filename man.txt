@@ -38,3 +38,6 @@ OPTIONS
     -r, --root
         The path to use as the root of this application. Default is the
         processes current working directory: process.cwd().
+
+    version [Alias: -v | --version]
+        Display the version of TAB (atab) being used.

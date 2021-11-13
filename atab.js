@@ -100,8 +100,7 @@ const Tab = (function compiler(rootDir) {
         }
 
         // Get the correct absolute path for where to store this file based on OS.
-        let pub = file.replace(/app\/|app\\/, (matches) => {
-            const match = matches[0];
+        let pub = file.replace(/app\/|app\\/, (match) => {
             if (match.indexOf('/') > -1) {
                 return 'public/';
             }
@@ -559,9 +558,10 @@ const Tab = (function compiler(rootDir) {
             getParts: new RegExp('^([gGvV]):(.*?)$', 'gi')
         };
         // Create regex for template sections.
-        REGEX.sections = {
+        REGEX.templates = {
             getEnd: new RegExp('\\${[sS]:end}', 'i'),
-            getStart: new RegExp('\\${[sS]:start}', 'i')
+            getStart: new RegExp('\\${[sS]:start}', 'i'),
+            key: new RegExp('[\\\\/]{0,1}private[\\\\/]{0,1}templates[\\\\/]{0,1}', 'i')
         };
         // Create regex for finding variables.
         REGEX.variables = {
@@ -584,22 +584,22 @@ const Tab = (function compiler(rootDir) {
         const files = getDirFiles(Path.join('private', 'templates'));
         files.forEach((file) => {
             let key = file.replace(ROOT, '');
-            key = key.replace(/private\/templates\/|private\\templates\\/g, '');
+            key = key.replace(REGEX.templates.key, '');
             key = key.replace(Path.extname(key), '');
             const data = getFile(file);
             // Check if this template is sectioned.
-            const section = data.search(REGEX.sections.getStart);
+            const section = data.search(REGEX.templates.getStart);
             if (section > -1) {
                 // Template has sections, break it apart.
-                const start = data.substring(0, section).replace(REGEX.sections.getStart, '');
+                const start = data.substring(0, section).replace(REGEX.templates.getStart, '');
                 TEMPS[key] = start.trim();
                 TEMPS_REGEX[key] = new RegExp(`\\\${[tT]:${key}}`, 'gi');
                 // Attempt to locate the end of the section.
                 let counter = 5; // There should only be one but just in case find that last one.
-                let end = data.substring(data.search(REGEX.sections.getEnd));
-                while (end.search(REGEX.sections.getEnd) > -1 && counter > 0) {
-                    end = end.substring(end.search(REGEX.sections.getEnd));
-                    end = end.replace(REGEX.sections.getEnd, '');
+                let end = data.substring(data.search(REGEX.templates.getEnd));
+                while (end.search(REGEX.templates.getEnd) > -1 && counter > 0) {
+                    end = end.substring(end.search(REGEX.templates.getEnd));
+                    end = end.replace(REGEX.templates.getEnd, '');
                     counter -= 1;
                 }
                 TEMPS[`_${key}`] = end.trim();
@@ -783,10 +783,6 @@ const Tab = (function compiler(rootDir) {
                 loadFunctions();
                 loadGlobals();
                 loadTemplates();
-                console.log('CONFIG', CONFIG);
-                console.log('FUNCTI', FUNCS);
-                console.log('GLOBAL', GLOBS);
-                console.log('TEMPLA', TEMPS);
                 compileCSS();
                 compileApp();
                 startServer(opts.port);
@@ -796,10 +792,20 @@ const Tab = (function compiler(rootDir) {
             case '-H':
             case '-HELP':
             case '--HELP':
-            default:
                 // eslint-disable-next-line no-case-declarations
                 const man = getFile(Path.join(TMP_DIR, 'man.txt'));
                 console.log(man);
+                break;
+            case '-V':
+            case '-VERSION':
+            case '--VERSION':
+            case 'VERSION':
+                // eslint-disable-next-line no-case-declarations
+                const pkg = getFile(Path.join(TMP_DIR, 'package.json'));
+                console.log(`v${pkg.version}`);
+                break;
+            default:
+                console.log('Command not recognized, use --help to display available commands.');
         }
     };
 
@@ -892,7 +898,7 @@ const Tab = (function compiler(rootDir) {
     };
 
     /**
-     * Use a Promise to Sleep (wait) before runnig some code.
+     * Use a Promise to Sleep (wait) before running some code.
      *
      * @param {Integer} ms How long to sleep for in milliseconds.
      * @returns A Promise that calls your wrapped code.
