@@ -98,7 +98,15 @@ const Tab = (function compiler(rootDir) {
         if (skipCompile(file)) {
             return;
         }
-        let pub = file.replace('app/', 'public/');
+
+        // Get the correct absolute path for where to store this file based on OS.
+        let pub = file.replace(/app\/|app\\/, (matches) => {
+            const match = matches[0];
+            if (match.indexOf('/') > -1) {
+                return 'public/';
+            }
+            return 'public\\';
+        });
 
         // Do not compile this file if its file extension is not in the compile whitelist.
         const ext = Path.extname(file);
@@ -172,7 +180,7 @@ const Tab = (function compiler(rootDir) {
                     console.log(`ERROR: ${Path.join('app', CSS.from)} does not exist.`);
                     return;
                 }
-                let cmd = '';
+                let cmd = 'npx ';
                 switch (CSS.preprocessor.toUpperCase()) {
                     case 'LESS':
                     case 'LESSC':
@@ -247,7 +255,7 @@ const Tab = (function compiler(rootDir) {
                 // We have to check on the public file too in case it was deleted already.
                 if (FS.existsSync(pubFile)) {
                     if (FS.statSync(pubFile).isDirectory()) {
-                        FS.rmdirSync(pubFile, { recursive: true });
+                        FS.rmSync(pubFile, { recursive: true });
                     } else {
                         FS.unlinkSync(pubFile);
                     }
@@ -300,6 +308,8 @@ const Tab = (function compiler(rootDir) {
      * @return {Array} An array of all directories and files found.
      */
     const getDirFiles = function (dir, filesAry) {
+        // Paths are usually relative which will break on windows OS.
+        dir = makePathAbsolute(dir);
         // If no array was provided this is the first run, make sure the dir exists first.
         if (!filesAry) {
             filesAry = [];
@@ -331,11 +341,7 @@ const Tab = (function compiler(rootDir) {
      *                       was a JSON file.
      */
     const getFile = function getFile(file, forceString) {
-        // Attempt to convert relative paths to absolute based off ROOT for security.
-        file = file.replace(/\.\.\/|\.\//g, '');
-        if (file.indexOf(ROOT) === -1 && file.indexOf(TMP_DIR) === -1) {
-            file = ROOT + file;
-        }
+        file = makePathAbsolute(file);
         /*
          * Load the file and if possible parse JSON strings into JSON objects.
          * The rs+ flag is used to cache bust and insure we get the actual file contents.
@@ -388,24 +394,24 @@ const Tab = (function compiler(rootDir) {
                 configObj.css.preprocessor = 'less';
                 configObj.css.to = 'css/main.css';
                 configObj.ignore.directories.push('less');
-                FS.rmdirSync(Path.join(ROOT, 'app', 'sass'), { recursive: true });
+                FS.rmSync(Path.join(ROOT, 'app', 'sass'), { recursive: true });
                 // Make sure the LESS package is installed.
-                runCmd('npm install less --save-dev && npm remove sass --save-dev');
+                runCmd(`cd ${ROOT} && npm install less --save-dev && npm remove sass --save-dev`);
                 break;
             case 'SASS':
                 configObj.css.from = 'sass/main.scss';
                 configObj.css.preprocessor = 'sass';
                 configObj.css.to = 'css/main.css';
                 configObj.ignore.directories.push('sass');
-                FS.rmdirSync(Path.join(ROOT, 'app', 'less'), { recursive: true });
+                FS.rmSync(Path.join(ROOT, 'app', 'less'), { recursive: true });
                 // Make sure the SASS package is installed.
-                runCmd('npm install sass --save-dev && npm remove less --save-dev');
+                runCmd(`cd ${ROOT} && npm install sass --save-dev && npm remove less --save-dev`);
                 break;
             default:
                 configObj.css = {};
-                FS.rmdirSync(Path.join(ROOT, 'app', 'less'), { recursive: true });
-                FS.rmdirSync(Path.join(ROOT, 'app', 'sass'), { recursive: true });
-                runCmd('npm remove sass --save-dev && npm remove less --save-dev');
+                FS.rmSync(Path.join(ROOT, 'app', 'less'), { recursive: true });
+                FS.rmSync(Path.join(ROOT, 'app', 'sass'), { recursive: true });
+                runCmd(`cd ${ROOT} && npm remove sass --save-dev && npm remove less --save-dev`);
                 break;
         }
 
@@ -564,7 +570,7 @@ const Tab = (function compiler(rootDir) {
         };
         // Create regex for checking unsafe shell commands.
         REGEX.unsafeCommands = [];
-        const avoid = ['`', "'", '\\\\', '"', '\\|', '\\*', '\\?', '~', '<', '>', '\\^', '\\(', '\\)', '\\[', '\\]', '\\{', '\\}', '\\$', '\\\n', '\\\r', 'cd ', 'pwd', 'whoami', 'rm ', 'unlink '];
+        const avoid = ['`', "'", '"', '\\|', '\\*', '\\?', '~', '<', '>', '\\^', '\\(', '\\)', '\\[', '\\]', '\\{', '\\}', '\\$', '\\\n', '\\\r', 'pwd', 'whoami', 'rm ', 'unlink ', 'cp ', '-r', '-rf'];
         avoid.forEach((cmd) => {
             REGEX.unsafeCommands.push(new RegExp(cmd, 'gi'));
         });
@@ -625,6 +631,20 @@ const Tab = (function compiler(rootDir) {
             }
             TEMPS[key] = value;
         });
+    };
+
+    /**
+     * Attempt to convert all paths to absolute paths for security; uses ROOT as the base.
+     *
+     * @param {String} unknownPath The path to check.
+     * @returns The corrected normalized absolute path if possible, otherwise just normalized.
+     */
+    const makePathAbsolute = function (unknownPath) {
+        unknownPath = unknownPath.replace(/\.\.\/|\.\//g, '');
+        if (unknownPath.indexOf(ROOT) === -1 && unknownPath.indexOf(TMP_DIR) === -1) {
+            return Path.normalize(Path.join(ROOT, unknownPath));
+        }
+        return Path.normalize(unknownPath);
     };
 
     /**
@@ -739,20 +759,6 @@ const Tab = (function compiler(rootDir) {
      * @param {String} cmd The command, with or without options, to run.
      */
     const run = function run(opts) {
-
-        // Change root if the option is present.
-        if (opts.root) {
-            setRoot(opts.root);
-        }
-
-        // Protect against empty command by defaulting to showing the manual page.
-        if (!opts.cmds || opts.cmds.length < 1) {
-            opts.cmds = ['MAN'];
-        }
-
-        // Update tmp directory.
-        updateTmpDir();
-
         // Run the specified command.
         switch (opts.cmds[0].toUpperCase()) {
             case 'BUILD':
@@ -777,6 +783,10 @@ const Tab = (function compiler(rootDir) {
                 loadFunctions();
                 loadGlobals();
                 loadTemplates();
+                console.log('CONFIG', CONFIG);
+                console.log('FUNCTI', FUNCS);
+                console.log('GLOBAL', GLOBS);
+                console.log('TEMPLA', TEMPS);
                 compileCSS();
                 compileApp();
                 startServer(opts.port);
@@ -812,6 +822,30 @@ const Tab = (function compiler(rootDir) {
         }
     };
 
+    const runSync = function (opts) {
+        // Change root if the option is present.
+        if (opts.root) {
+            setRoot(opts.root);
+        }
+
+        // Protect against empty command by defaulting to showing the manual page.
+        if (!opts.cmds || opts.cmds.length < 1) {
+            opts.cmds = ['MAN'];
+        }
+
+        // Update tmp directory by making sure it exists and is using the latest version.
+        updateTmpDir();
+
+        // Avoid race conditions by delaying the call to run the actual command.
+        sleep(250)
+            .then(() => {
+                run(opts);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     /**
      * Change the root directory for this application.
      *
@@ -820,7 +854,7 @@ const Tab = (function compiler(rootDir) {
     const setRoot = function (root) {
         if (root) {
             if (FS.existsSync(root)) {
-                ROOT = root;
+                ROOT = Path.resolve(root);
             }
         }
     };
@@ -855,6 +889,16 @@ const Tab = (function compiler(rootDir) {
             }
         }
         return false;
+    };
+
+    /**
+     * Use a Promise to Sleep (wait) before runnig some code.
+     *
+     * @param {Integer} ms How long to sleep for in milliseconds.
+     * @returns A Promise that calls your wrapped code.
+     */
+    const sleep = function (ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     };
 
     /**
@@ -1013,7 +1057,7 @@ const Tab = (function compiler(rootDir) {
                 } else if (type === 'unlinkDir') {
                     // It was actually a directory being deleted so handle that.
                     const pubPath = Path.join(ROOT, path.replace('app', 'public'));
-                    FS.rmdirSync(pubPath, { recursive: true });
+                    FS.rmSync(pubPath, { recursive: true });
                 } else {
                     // This may be a special case: .md to .html file for example.
                     const appFile = Path.join(ROOT, path);
@@ -1076,7 +1120,7 @@ const Tab = (function compiler(rootDir) {
         if (isNewVersion(tmpVersion, pkg.version)) {
             // Yes. Delete them and copy over the new version of atab.
             if (FS.existsSync(TMP_DIR)) {
-                FS.rmdirSync(TMP_DIR, { recursive: true });
+                FS.rmSync(TMP_DIR, { recursive: true });
             }
             FS.mkdirSync(TMP_DIR);
             FS.readdirSync(__dirname).forEach((item) => {
@@ -1131,7 +1175,7 @@ const Tab = (function compiler(rootDir) {
     // Publicly available methods.
     return {
         getRoot,
-        run,
+        run: runSync,
         setRoot
     };
 

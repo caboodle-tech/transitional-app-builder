@@ -1,6 +1,6 @@
 {
   "name": "atab",
-  "version": "1.2.0",
+  "version": "1.5.0",
   "description": "A Transitional App Builder (TAB/atab) that makes creating single-page and multi-page websites or applications easier.",
   "main": "atab.js",
   "bin": {
@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "node ./bin/atab",
-    "test": "npx mocha ./test/run-all-tests.js"
+    "test": "npx mocha ./test/run-all-tests.js --delay"
   },
   "repository": {
     "type": "git",

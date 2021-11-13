@@ -32,7 +32,7 @@ files.forEach( (file) => {
 describe('Cleaning up test files should:', () => {
 
     it('remove the test installation successfully.', () => {
-        FS.rmdirSync(testRoot, { recursive: true });
+        FS.rmSync(testRoot, { recursive: true }, () => {});
 
         let pass = false;
         if ( ! FS.existsSync(testRoot) ) {
@@ -54,3 +54,24 @@ describe('Cleaning up test files should:', () => {
     });
 
 });
+
+/**
+ * The installation needs time to complete first. Run the test when the
+ * installation finishes or timeout if we waited more than 1 minute.
+ */
+function runTestWhenReady() {
+    const config = Path.join(testRoot, 'private', 'config.json');
+    if(FS.existsSync(config)) {
+        run();
+    } else {
+        const now = new Date().getTime() / 1000;
+        if ( started + 60 > now ) {
+            setTimeout(runTestWhenReady, 500);
+        } else {
+            console.error('ERROR: Tests took to long to run! Something may be wrong or the test environment hung.');
+            process.exit(1);
+        }
+    }
+}
+const started = new Date().getTime() / 1000;
+setTimeout(runTestWhenReady, 500);

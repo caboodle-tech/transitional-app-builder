@@ -28,14 +28,4 @@ describe('When initializing a new instance of TAB:', () => {
         expect(pass).to.eql(true);
     });
 
-    it('it should create the `public` directory.', () => {
-        const dir = Path.join( testRoot, 'public' );
-
-        let pass = false;
-        if ( FS.existsSync(dir) ) {
-            pass = true;
-        }
-        expect(pass).to.eql(true);
-    });
-
 });
