@@ -1,6 +1,6 @@
 {
     "name": "atab",
-    "version": "1.5.1",
+    "version": "1.5.2",
     "description": "A Transitional App Builder (TAB/atab) that makes creating single-page and multi-page websites or applications easier.",
     "main": "atab.js",
     "bin": {

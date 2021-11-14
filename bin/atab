@@ -52,8 +52,6 @@ for (let i = 0; i < opts.length; i++) {
     }
 }
 
-console.log(realOpts);
-
 // Run TAB according to the users command(s).
 try {
     const tab = new Tab();
