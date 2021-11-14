@@ -803,6 +803,7 @@ const Tab = (function compiler(rootDir) {
                 const man = getFile(Path.join(TMP_DIR, 'man.txt'));
                 console.log(man);
                 break;
+            case 'V':
             case '-V':
             case '-VERSION':
             case '--VERSION':
