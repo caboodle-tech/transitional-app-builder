@@ -780,6 +780,7 @@ const Tab = (function compiler(rootDir) {
                 });
                 break;
             case 'INIT':
+            case 'INSTALL':
             case 'INITIALIZE':
                 initializeNewProject(opts);
                 break;

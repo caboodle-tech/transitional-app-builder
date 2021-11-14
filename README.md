@@ -13,6 +13,9 @@ Transitional App Builder, also referred to as *A* Transitional App Builder (atab
 
 ## Installation & Usage
 
+### Pre-Installation
+TAB is a Node based application that is installed through the Node Package Manager (NPM) instead of with an application package or executable. You will need a minimum Node version of `14.18.1` for TAB to install and operate correctly on your machine. Node version `16.13.0` or greater is preferred.
+
 ### Installation
 TAB can be installed globally (recommended) or locally to a specific project. For a global install run the following command from your terminal:
 
@@ -40,7 +43,10 @@ npx atab --help
 **Initialize a new TAB Project**<br>
 ```javascript
 npx atab init
+or
+npm atab install
 ```
+**NOTE:** New installations of TAB start with a few demo files. Use the next command to see TAB in action.
 
 **Start the TAB Server / Auto Compiler**<br>
 ```javascript
