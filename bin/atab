@@ -29,8 +29,9 @@ for (let i = 0; i < opts.length; i++) {
             value = opts[i + 1];
             i += 1;
         }
+        const key = op.replace(/-/g, '').trim().toUpperCase();
         // eslint-disable-next-line default-case
-        switch (op.replace(/-/g, '').trim().toUpperCase()) {
+        switch (key) {
             case 'C':
             case 'CSS':
                 realOpts.css = value.toUpperCase();
@@ -43,11 +44,15 @@ for (let i = 0; i < opts.length; i++) {
             case 'ROOT':
                 realOpts.root = value;
                 break;
+            default:
+                realOpts.cmds.push(op.toUpperCase());
         }
     } else {
         realOpts.cmds.push(op);
     }
 }
+
+console.log(realOpts);
 
 // Run TAB according to the users command(s).
 try {
