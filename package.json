@@ -1,6 +1,6 @@
 {
     "name": "atab",
-    "version": "1.5.2",
+    "version": "1.6.0",
     "description": "A Transitional App Builder (TAB/atab) that makes creating single-page and multi-page websites or applications easier.",
     "main": "atab.js",
     "bin": {
@@ -18,7 +18,7 @@
         "mocha": "^9.1.3"
     },
     "dependencies": {
-        "@caboodle-tech/node-simple-server": "^1.2.4"
+        "@caboodle-tech/node-simple-server": "^1.3.0"
     },
     "scripts": {
         "start": "node ./bin/atab",
